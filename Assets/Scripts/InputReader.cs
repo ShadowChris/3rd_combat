@@ -10,6 +10,9 @@ using UnityEngine.InputSystem;
  */
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
+    // 人物动作移动
+    public Vector2 MovementValue { get; private set; }
+    
     public event Action JumpEvent;
     public event Action DodgeEvent;
     
@@ -52,5 +55,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if(!context.performed) {return;}
         DodgeEvent?.Invoke();
+    }
+    
+    /**
+     * 监听控制器移动，参数context可以获取三维坐标，然后赋值给InputReader的movementValue
+     */
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        // context会读取动作的vector坐标
+        MovementValue = context.ReadValue<Vector2>();
     }
 }
