@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
  */
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
-    // 人物动作移动
+    // 人物动作移动：+x：右，-x：左，+y前，-y后
     public Vector2 MovementValue { get; private set; }
     
     public event Action JumpEvent;
@@ -64,5 +64,10 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         // context会读取动作的vector坐标
         MovementValue = context.ReadValue<Vector2>();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        //cinemachine为我们处理了look方法，因此不需要在函数内实现逻辑
     }
 }
