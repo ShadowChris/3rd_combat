@@ -16,9 +16,15 @@ public class PlayerStateMachine : StateMachine
     
     // 动画器：控制角色的动画效果
     [field: SerializeField] public Animator Animator { get; private set; }
-    
+
+    // 旋转丝滑程度：值越大，人物动作旋转越丝滑
+    [field: SerializeField] public float RotationDamping { get; private set; }
+
+
     // 主相机位置：为了控制器跟随相机视角改变（按住W，同时移动视角也可以左右移动）
-     public Transform MainCameraTransform { get; private set; }
+    public Transform MainCameraTransform { get; private set; }
+
+
 
     // 具体状态机：传入状态（私有方法）
     private void Start()
@@ -26,7 +32,7 @@ public class PlayerStateMachine : StateMachine
         // 主相机位置赋值
         if (Camera.main != null) MainCameraTransform = Camera.main.transform;
         
-        SwitchState(new PlayerTestState(this));
+        SwitchState(new PlayerFreeLookState(this));
     }
     
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -324,7 +324,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697780151}
-  m_LocalRotation: {x: 0.17191942, y: 3.958179e-26, z: -6.907726e-27, w: 0.98511106}
+  m_LocalRotation: {x: 0.17191944, y: 0.000000023971197, z: -0.0000000041834016, w: 0.98511106}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -582,7 +582,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.15397237, y: 0.000000014723467, z: -0.0000000022943671, w: 0.98807514}
+  m_LocalRotation: {x: 0.15397239, y: 0, z: 0, w: 0.9880752}
   m_LocalPosition: {x: 0, y: 2.907, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1105,7 +1105,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420134509}
-  m_LocalRotation: {x: 0.15397236, y: 6.605404e-26, z: -1.0293241e-26, w: 0.98807514}
+  m_LocalRotation: {x: 0.15397236, y: -1e-45, z: -0, w: 0.9880752}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1346,8 +1346,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2691462069683147277, guid: 9a63b3b175aa248ad962baa8a1dc0581, type: 3}
-      propertyPath: <FreeLookMovementSpeed>k__BackingField
-      value: 3.19
+      propertyPath: <RotationDamping>k__BackingField
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4053065849357450205, guid: 9a63b3b175aa248ad962baa8a1dc0581, type: 3}
       propertyPath: m_Quality

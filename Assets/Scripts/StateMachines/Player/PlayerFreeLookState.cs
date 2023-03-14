@@ -3,9 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerTestState: PlayerBaseState
+public class PlayerFreeLookState: PlayerBaseState
 {
-    public PlayerTestState(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    /**
+     * 1. 统一管理传入Animator的参数名；
+     * 2. 使用readonly代替const：const在编译前就不可更改，但是Animator.StringToHash()是在编译后赋值。因此使用readonly：被第一次赋值则不可更改
+     * 3. 使用int的类型Hash传入Animator的速度比直接传入字符串更快
+     */
+    private readonly int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+
+    /**
+     * 角色动画动作之间的过渡时间
+     */
+    private const float AnimatorDampTime = 0.1f;
+
+    public PlayerFreeLookState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
     {   
@@ -33,15 +45,16 @@ public class PlayerTestState: PlayerBaseState
             // 修改animator的参数。
             // name: 需要修改的参数名，value: 状态的参数值(越靠近0：静止，越靠近1：跑步)，
             // dampTime：让状态平滑过渡的时间
-            stateMachine.Animator.SetFloat("FreeLookSpeed", 0, 0.1f, deltaTime);
+            stateMachine.Animator.SetFloat(FreeLookSpeedHash, 0, AnimatorDampTime, deltaTime);
             return;
         }
-        stateMachine.Animator.SetFloat("FreeLookSpeed", 1, 0.1f, deltaTime);
+        stateMachine.Animator.SetFloat(FreeLookSpeedHash, 1, AnimatorDampTime, deltaTime);
+
+        // 调整角色的朝向
+        FaceMovementDirection(movement, deltaTime);
         
-        
-        // 移动的时候，需要控制角色的朝向.Quaternion: 四元组，rotation的对象
-        stateMachine.transform.rotation = Quaternion.LookRotation(movement);
     }
+
 
     public override void Exit()
     {
@@ -51,7 +64,7 @@ public class PlayerTestState: PlayerBaseState
     private void OnJump()
     {
         // 需要引用父类的状态机，调用方法实现状态转移
-        stateMachine.SwitchState(new PlayerTestState(stateMachine));
+        stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
     }
 
     private Vector3 CalculateMovement()
@@ -72,5 +85,20 @@ public class PlayerTestState: PlayerBaseState
         return forward * stateMachine.InputReader.MovementValue.y +
                right * stateMachine.InputReader.MovementValue.x;
     }
-    
+
+    private void FaceMovementDirection(Vector3 movement, float deltaTime)
+    {
+        // 移动的时候，需要控制角色的朝向.Quaternion: 四元组，rotation的对象
+        //stateMachine.transform.rotation = Quaternion.LookRotation(movement);
+
+        // 优化：引入丝滑程度，使得旋转的时候更加流畅丝滑，而不是瞬间切换
+        // Quaternion.Lerp(a,b,t): 线性插值法，在[a,b]之间取一个值，t∈[0,1]。t越小，越接近a；t越大，越接近b 
+        stateMachine.transform.rotation = Quaternion.Lerp(
+            stateMachine.transform.rotation,
+            Quaternion.LookRotation(movement),
+            deltaTime * stateMachine.RotationDamping
+        );
+
+    }
+
 }
