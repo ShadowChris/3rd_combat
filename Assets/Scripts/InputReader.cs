@@ -15,7 +15,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     
     public event Action JumpEvent;
     public event Action DodgeEvent;
-    
+    public event Action TargetEvent;
+    public event Action CancelEvent;
+
     // unity输入系统（InputSystem）映射的控制类
     private Controls controls;
 
@@ -69,5 +71,19 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
         //cinemachine为我们处理了look方法，因此不需要在函数内实现逻辑
+    }
+    /**
+     * OnTarget/OnCancel: 锁定/取消目标
+     */
+    public void OnTarget(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+        TargetEvent?.Invoke();
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+        CancelEvent?.Invoke();
     }
 }

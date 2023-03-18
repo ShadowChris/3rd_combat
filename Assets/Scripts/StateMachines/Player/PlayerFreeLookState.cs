@@ -20,8 +20,9 @@ public class PlayerFreeLookState: PlayerBaseState
     public PlayerFreeLookState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
-    {   
-        // // 把下面的onjump方法注册到JumpEvent中
+    {
+        // 把下面的OnXXX()方法注册到XXXEvent中：如果XXXEvent被触发，就会执行OnXXX()函数
+        stateMachine.InputReader.TargetEvent += OnTarget;
         // stateMachine.InputReader.JumpEvent += OnJump;
     }
 
@@ -58,7 +59,18 @@ public class PlayerFreeLookState: PlayerBaseState
 
     public override void Exit()
     {
+        stateMachine.InputReader.TargetEvent -= OnTarget;
         // stateMachine.InputReader.JumpEvent -= OnJump;
+    }
+
+
+    //-----------------------------------------------------
+    // OnXXX()函数：状态开始时被注册到InputReader里的event事件中。
+    // 按下对应按钮，就会invoke事件，从而执行相应的OnXXX()函数
+    private void OnTarget()
+    {
+        
+        stateMachine.SwitchState(new PlayerTargetState(stateMachine));
     }
 
     private void OnJump()
