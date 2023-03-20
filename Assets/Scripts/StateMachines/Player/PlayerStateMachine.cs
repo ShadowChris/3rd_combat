@@ -17,6 +17,9 @@ public class PlayerStateMachine : StateMachine
     // 动画器：控制角色的动画效果
     [field: SerializeField] public Animator Animator { get; private set; }
 
+    // 目标选择器：实现目标相关功能（目标锁定/目标范围检测）
+    [field: SerializeField] public Targeter Targeter { get; private set; }
+
     // 旋转丝滑程度：值越大，人物动作旋转越丝滑
     [field: SerializeField] public float RotationDamping { get; private set; }
 

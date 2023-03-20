@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf4492175ef32a4e98b82063c47a32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets: []
 --- !u!135 &948015697634129967
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7277,6 +7276,7 @@ MonoBehaviour:
   <Controller>k__BackingField: {fileID: 951340460224647256}
   <FreeLookMovementSpeed>k__BackingField: 3.19
   <Animator>k__BackingField: {fileID: 4053065849361548557}
+  <Targeter>k__BackingField: {fileID: 5976729816232516293}
   <RotationDamping>k__BackingField: 0
 --- !u!114 &4508977441983743585
 MonoBehaviour:

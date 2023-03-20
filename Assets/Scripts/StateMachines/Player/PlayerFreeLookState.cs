@@ -31,7 +31,7 @@ public class PlayerFreeLookState: PlayerBaseState
         
         // 功能： 控制角色移动
         Vector3 movement = CalculateMovement();
-        Debug.Log(movement);
+        //Debug.Log(movement);
         
         //*********************************************************************
         // player根据movement坐标进行平移（无视障碍物）；乘deltaTime排除帧率对移动速度的影响
@@ -69,7 +69,9 @@ public class PlayerFreeLookState: PlayerBaseState
     // 按下对应按钮，就会invoke事件，从而执行相应的OnXXX()函数
     private void OnTarget()
     {
-        
+        if (!stateMachine.Targeter.SelectTarget()) { return; }
+
+        // 切换到锁定目标状态
         stateMachine.SwitchState(new PlayerTargetState(stateMachine));
     }
 
