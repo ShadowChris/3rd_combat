@@ -10,7 +10,10 @@ public class PlayerFreeLookState: PlayerBaseState
      * 2. 使用readonly代替const：const在编译前就不可更改，但是Animator.StringToHash()是在编译后赋值。因此使用readonly：被第一次赋值则不可更改
      * 3. 使用int的类型Hash传入Animator的速度比直接传入字符串更快
      */
+    // 闲置状态速度
     private readonly int FreeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+    // 闲置状态的动画混合树
+    private readonly int FreeLookBlendTreeHash = Animator.StringToHash("FreeLookBlendTree");
 
     /**
      * 角色动画动作之间的过渡时间
@@ -24,6 +27,9 @@ public class PlayerFreeLookState: PlayerBaseState
         // 把下面的OnXXX()方法注册到XXXEvent中：如果XXXEvent被触发，就会执行OnXXX()函数
         stateMachine.InputReader.TargetEvent += OnTarget;
         // stateMachine.InputReader.JumpEvent += OnJump;
+        
+        // 切换到闲置动画
+        stateMachine.Animator.Play(FreeLookBlendTreeHash);
     }
 
     public override void Tick(float deltaTime)
@@ -72,7 +78,7 @@ public class PlayerFreeLookState: PlayerBaseState
         if (!stateMachine.Targeter.SelectTarget()) { return; }
 
         // 切换到锁定目标状态
-        stateMachine.SwitchState(new PlayerTargetState(stateMachine));
+        stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
     }
 
     private void OnJump()

@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTargetState : PlayerBaseState
+public class PlayerTargetingState : PlayerBaseState
 {
-    public PlayerTargetState(PlayerStateMachine stateMachine) : base(stateMachine)
+    // 锁定目标状态的动画混合树
+    private readonly int TargetingBlendTreeHash = Animator.StringToHash("TargetingBlendTree");
+    public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void Enter()
     {
         stateMachine.InputReader.CancelEvent += OnCancel;
+        // 过渡到当前状态动画
+        stateMachine.Animator.Play(TargetingBlendTreeHash);
     }
 
     public override void Tick(float deltaTime)
