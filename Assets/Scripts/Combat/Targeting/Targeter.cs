@@ -4,46 +4,46 @@ using UnityEngine;
 
 public class Targeter : MonoBehaviour
 {
-    // targets£º±£´æ½øÈëÁìÓò·¶Î§µÄtargetÁĞ±í
+    // targetsï¼šä¿å­˜è¿›å…¥é¢†åŸŸèŒƒå›´çš„targetåˆ—è¡¨
     [field: SerializeField] private List<Target> targets = new List<Target>();
 
-    // ±£´æµ±Ç°Ëø¶¨µÄÄ¿±ê
+    // ä¿å­˜å½“å‰é”å®šçš„ç›®æ ‡
     public Target CurrentTarget { get; private set; }
 
 
-    // OnTriggerEnter(Collider other)£ºÒ»¸ötarget¸Õ½øÈëÁìÓò£¬´¥·¢¸Ãº¯Êı
+    // OnTriggerEnter(Collider other)ï¼šä¸€ä¸ªtargetåˆšè¿›å…¥é¢†åŸŸï¼Œè§¦å‘è¯¥å‡½æ•°
     private void OnTriggerEnter(Collider other)
     {
-        // Ğ£ÑétÊÇ·Ç¿Õºó£¬¼ÓÈëÁĞ±í
+        // æ ¡éªŒtæ˜¯éç©ºåï¼ŒåŠ å…¥åˆ—è¡¨
         Target t = other.GetComponent<Target>();
         if (t == null) return;
         targets.Add(t);
-        // ÁíÒ»ÖÖĞ´·¨£º
+        // å¦ä¸€ç§å†™æ³•ï¼š
         // if (!other.TryGetComponent<Target>(out Target target)) { return; }
         //targets.Add(t);
     }
 
-    // OnTriggerExit(Collider other)£ºÒ»¸ötarget¸ÕÍË³öÁìÓò£¬´¥·¢¸Ãº¯Êı
+    // OnTriggerExit(Collider other)ï¼šä¸€ä¸ªtargetåˆšé€€å‡ºé¢†åŸŸï¼Œè§¦å‘è¯¥å‡½æ•°
     private void OnTriggerExit(Collider other)
     {
         Target t = other.GetComponent<Target>();
         if (t == null) return;
         targets.Remove(t);
-        // ÁíÒ»ÖÖĞ´·¨£º
+        // å¦ä¸€ç§å†™æ³•ï¼š
         // if (!other.TryGetComponent<Target>(out Target target)) { return; }
         //targets.Add(t);
     }
 
-    // SelectTarget()£ºËø¶¨Ä¿±ê
+    // SelectTarget()ï¼šé”å®šç›®æ ‡
     public bool SelectTarget()
-    {   // Ã»ÓĞÄ¿±ê£¬²»Ëø¶¨
+    {   // æ²¡æœ‰ç›®æ ‡ï¼Œä¸é”å®š
         if (targets.Count == 0) { return false; }
-        // ½«ÁĞ±íµÚÒ»¸öÔªËØ×÷ÎªËø¶¨µÄÄ¿±ê
+        // å°†åˆ—è¡¨ç¬¬ä¸€ä¸ªå…ƒç´ ä½œä¸ºé”å®šçš„ç›®æ ‡
         CurrentTarget = targets[0];
         return true;
     }
 
-    // Cancel()£ºÈ¡ÏûËø¶¨
+    // Cancel()ï¼šå–æ¶ˆé”å®š
     public void Cancel()
     {
         CurrentTarget = null;
