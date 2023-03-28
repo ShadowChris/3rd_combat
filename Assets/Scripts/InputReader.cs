@@ -60,7 +60,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     }
     
     /**
-     * 监听控制器移动，参数context可以获取三维坐标，然后赋值给InputReader的movementValue
+     * 监听控制器移动，按响应键盘按钮会触发以下函数。
+     * 参数context可以获取三维坐标，然后赋值给InputReader的movementValue
      */
     public void OnMove(InputAction.CallbackContext context)
     {

@@ -1240,6 +1240,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5976729816232516293, guid: 9a63b3b175aa248ad962baa8a1dc0581, type: 3}
+      propertyPath: cineTargetGroup
+      value: 
+      objectReference: {fileID: 5510284286727873544}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a63b3b175aa248ad962baa8a1dc0581, type: 3}
 --- !u!95 &5395200953988664944 stripped

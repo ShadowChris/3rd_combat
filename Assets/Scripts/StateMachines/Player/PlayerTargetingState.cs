@@ -12,6 +12,7 @@ public class PlayerTargetingState : PlayerBaseState
 
     public override void Enter()
     {
+        // 将本类下方的onCancel()注册到Event中。Event被触发，则触发响应函数
         stateMachine.InputReader.CancelEvent += OnCancel;
         // 过渡到当前状态动画
         stateMachine.Animator.Play(TargetingBlendTreeHash);
@@ -19,7 +20,11 @@ public class PlayerTargetingState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
-        Debug.Log(stateMachine.Targeter.CurrentTarget.name);
+        // 如果丢失目标（离开目标范围），自动转换状态
+        if (stateMachine.Targeter.CurrentTarget == null)
+        {
+            stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
+        }
     }
 
     public override void Exit()
