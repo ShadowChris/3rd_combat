@@ -19,6 +19,9 @@ public class PlayerStateMachine : StateMachine
 
     // 目标选择器：实现目标相关功能（目标锁定/目标范围检测）
     [field: SerializeField] public Targeter Targeter { get; private set; }
+    
+    // 受力器：实现角色的各种受力状况，如：重力、反击
+    [field: SerializeField] public ForceReceiver ForceReceiver { get; private set; }
 
     // 旋转丝滑程度：值越大，人物动作旋转越丝滑
     [field: SerializeField] public float RotationDamping { get; private set; }

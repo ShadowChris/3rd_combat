@@ -44,9 +44,12 @@ public class PlayerFreeLookState: PlayerBaseState
         // stateMachine.transform.Translate(movement * deltaTime);
         
         // 更优：使用CharacterController控制角色移动,同时设置速度
-        stateMachine.Controller.Move(movement * (deltaTime * stateMachine.FreeLookMovementSpeed));
+        // stateMachine.Controller.Move(movement * (deltaTime * stateMachine.FreeLookMovementSpeed));
         
-        //动画过渡
+        // 更更优：使用BaseState的Move()方法，首先为角色运动赋予一个全局的力，例如重力
+        Move(movement * stateMachine.FreeLookMovementSpeed, deltaTime);
+        
+        // 动画过渡
         if (stateMachine.InputReader.MovementValue == Vector2.zero)
         {
             // 修改animator的参数。
