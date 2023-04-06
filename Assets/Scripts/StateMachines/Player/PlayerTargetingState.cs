@@ -6,9 +6,7 @@ public class PlayerTargetingState : PlayerBaseState
 {
     // 锁定目标状态的动画混合树
     private readonly int TargetingBlendTreeHash = Animator.StringToHash("TargetingBlendTree");
-    public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine)
-    {
-    }
+    public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
     {
@@ -25,6 +23,10 @@ public class PlayerTargetingState : PlayerBaseState
         {
             stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
         }
+        
+        FaceTarget();
+        Vector3 movement = CalculateMovement();
+        Move(movement * stateMachine.TargetingMovementSpeed, deltaTime);
     }
 
     public override void Exit()
@@ -36,6 +38,18 @@ public class PlayerTargetingState : PlayerBaseState
     {
         stateMachine.Targeter.Cancel();
         stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
+    }
+    
+    private Vector3 CalculateMovement()
+    {
+        // 根据角色朝向位置调整移动视角。角色朝向锁定至目标(在PlayerBaseState的FaceTarget())，相机角度不需要
+        Transform playerTransform = stateMachine.transform;
+        
+        Vector3 forward = playerTransform.forward;
+        Vector3 right = playerTransform.right;
+        
+        return forward * stateMachine.InputReader.MovementValue.y +
+               right * stateMachine.InputReader.MovementValue.x;
     }
 
 }

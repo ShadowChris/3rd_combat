@@ -14,6 +14,9 @@ public class PlayerStateMachine : StateMachine
     // 正常移动速度。不同状态可能移动速度不一样，后续可能有TargetMovementSpeed或者其他的
     [field:SerializeField] public float FreeLookMovementSpeed { get; private set; }
     
+    // 锁定目标时移动速度
+    [field:SerializeField] public float TargetingMovementSpeed { get; private set; }
+    
     // 动画器：控制角色的动画效果
     [field: SerializeField] public Animator Animator { get; private set; }
 

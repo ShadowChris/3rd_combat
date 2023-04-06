@@ -105,6 +105,10 @@ public class PlayerFreeLookState: PlayerBaseState
         // 人物移动不需要相机y轴的倾斜角，因此归零
         forward.y = 0;
         right.y = 0;
+        // 使得在每个方向都一样大小
+        forward.Normalize();
+        right.Normalize();
+        
         return forward * stateMachine.InputReader.MovementValue.y +
                right * stateMachine.InputReader.MovementValue.x;
     }
