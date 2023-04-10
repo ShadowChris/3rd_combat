@@ -1269,6 +1269,10 @@ PrefabInstance:
       propertyPath: m_MinimumFOV
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 6321089301707184496, guid: 16f3735b142ea3b4e9480bf95bb6b9bb, type: 3}
+      propertyPath: <TargetingMovementSpeed>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8471768774708191989, guid: 16f3735b142ea3b4e9480bf95bb6b9bb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00007066171
@@ -1315,7 +1319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8471768774773022825, guid: 16f3735b142ea3b4e9480bf95bb6b9bb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.05810852
+      value: 0.05810853
       objectReference: {fileID: 0}
     - target: {fileID: 8471768774773022825, guid: 16f3735b142ea3b4e9480bf95bb6b9bb, type: 3}
       propertyPath: m_LocalRotation.y

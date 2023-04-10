@@ -6,6 +6,9 @@ public class PlayerTargetingState : PlayerBaseState
 {
     // 锁定目标状态的动画混合树
     private readonly int TargetingBlendTreeHash = Animator.StringToHash("TargetingBlendTree");
+    private readonly int TargetingForwardHash = Animator.StringToHash("TargetingForward");
+    private readonly int TargetingRightHash = Animator.StringToHash("TargetingRight");
+    private const float TargetingAnimatorDampTime = 0.1f;
     public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
@@ -27,6 +30,8 @@ public class PlayerTargetingState : PlayerBaseState
         FaceTarget();
         Vector3 movement = CalculateMovement();
         Move(movement * stateMachine.TargetingMovementSpeed, deltaTime);
+
+        UpdateAnimator(deltaTime);
     }
 
     public override void Exit()
@@ -50,6 +55,38 @@ public class PlayerTargetingState : PlayerBaseState
         
         return forward * stateMachine.InputReader.MovementValue.y +
                right * stateMachine.InputReader.MovementValue.x;
+    }
+
+    private void UpdateAnimator(float deltaTime)
+    {
+        // 前后移动动画过渡
+        switch (stateMachine.InputReader.MovementValue.y)
+        {
+            case 0:
+                stateMachine.Animator.SetFloat(TargetingForwardHash, 0, TargetingAnimatorDampTime, deltaTime);
+                break;
+            case > 0:
+                stateMachine.Animator.SetFloat(TargetingForwardHash, 1, TargetingAnimatorDampTime, deltaTime);
+                break;
+            default:
+                stateMachine.Animator.SetFloat(TargetingForwardHash, -1, TargetingAnimatorDampTime, deltaTime);
+                break;
+        }
+        
+        // 左右移动动画过渡
+        switch (stateMachine.InputReader.MovementValue.x)
+        {
+            case 0:
+                stateMachine.Animator.SetFloat(TargetingRightHash,0, TargetingAnimatorDampTime, deltaTime);
+                break;
+            case > 0:
+                stateMachine.Animator.SetFloat(TargetingRightHash, 1, TargetingAnimatorDampTime, deltaTime);
+                break;
+            default:
+                stateMachine.Animator.SetFloat(TargetingRightHash, -1, TargetingAnimatorDampTime, deltaTime);
+                break;
+        }
+
     }
 
 }

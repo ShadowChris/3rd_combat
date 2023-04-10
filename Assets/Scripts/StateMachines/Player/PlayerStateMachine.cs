@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerStateMachine : StateMachine
 {   
-    // 输入监听器（Property属性）：设置为只读，私有类才能修改
+    // 输入监听器（Property属性）：设置为只读，只有私有类才能修改
     // [field: SerializeField]：把Property转成Field，就可以在unity检查器中获取
     [field: SerializeField] public InputReader InputReader { get; private set; }
     
-    // 角色控制器：控制角色的移动等属性，涉及角色的碰撞参数（详情见Inspector）
+    // 角色控制器：控制角色的移动等属性，涉及角色的碰撞参数（内嵌类，详情见Inspector）
     [field: SerializeField] public CharacterController Controller { get; private set; }
     
     // 正常移动速度。不同状态可能移动速度不一样，后续可能有TargetMovementSpeed或者其他的
