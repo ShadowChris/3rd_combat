@@ -16,10 +16,19 @@ public class Targeter : MonoBehaviour
     [field: SerializeField] private List<Target> targets = new List<Target>();
 
     /**
+     * 主相机，为了获取最靠近相机中心的target
+     */
+    private Camera mainCamera;
+
+    /**
      * 保存当前锁定的目标
      */
     public Target CurrentTarget { get; private set; }
 
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
 
     /**
      * OnTriggerEnter(Collider other)：一个target刚进入领域，触发该函数
@@ -59,9 +68,30 @@ public class Targeter : MonoBehaviour
     public bool SelectTarget()
     {   // 没有目标，不锁定
         if (targets.Count == 0) { return false; }
-        
+
         // 将列表第一个元素作为锁定的目标
-        CurrentTarget = targets[0];
+        //CurrentTarget = targets[0];
+
+        // 优：将最靠近摄像机中心的物体作为锁定的目标
+        Target closestTarget = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (Target target in targets) {
+            // 坐标系转换，Viewport坐标系：左下角为(0,0)，右上角为(1,1)。常见坐标系总结：https://zhuanlan.zhihu.com/p/115353437
+            Vector2 viewPos = mainCamera.WorldToViewportPoint(target.transform.position);
+
+            if (viewPos.x < 0 || viewPos.x > 1 || viewPos.y < 0 || viewPos.y > 1) { continue; }
+
+            Vector2 currDistanceVector = viewPos - new Vector2(0.5f, 0.5f);
+            if (closestDistance > currDistanceVector.sqrMagnitude)
+            {
+                closestDistance = currDistanceVector.sqrMagnitude;
+                closestTarget = target;
+            }
+        }
+
+        if (closestTarget == null) { return false; }
+        CurrentTarget = closestTarget;
         
         // 将该目标加入相机组
         cineTargetGroup.AddMember(CurrentTarget.transform, 1f, 2f);
