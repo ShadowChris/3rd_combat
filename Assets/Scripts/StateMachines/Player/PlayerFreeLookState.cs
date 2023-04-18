@@ -34,6 +34,11 @@ public class PlayerFreeLookState: PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
+        if (stateMachine.InputReader.IsAttacking)
+        {
+            stateMachine.SwitchState(new PlayerAttackingState(stateMachine));
+            return;
+        }
         
         // 功能： 控制角色移动
         Vector3 movement = CalculateMovement();
