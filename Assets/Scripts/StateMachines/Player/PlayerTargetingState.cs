@@ -21,6 +21,13 @@ public class PlayerTargetingState : PlayerBaseState
 
     public override void Tick(float deltaTime)
     {
+        // 首先检查是否按下攻击键
+        if (stateMachine.InputReader.IsAttacking)
+        {
+            stateMachine.SwitchState(new PlayerAttackingState(stateMachine));
+            return;
+        }
+
         // 如果丢失目标（离开目标范围），自动转换状态
         if (stateMachine.Targeter.CurrentTarget == null)
         {

@@ -18,6 +18,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action TargetEvent;
     public event Action CancelEvent;
 
+    // 检测玩家是否按了攻击键
+    public bool IsAttacking { get; private set; }
+
     // unity输入系统（InputSystem）映射的控制类
     private Controls controls;
 
@@ -86,5 +89,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     {
         if (!context.performed) { return; }
         CancelEvent?.Invoke();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed) { IsAttacking = true; } 
+        else if (context.canceled) { IsAttacking = false; }
     }
 }
