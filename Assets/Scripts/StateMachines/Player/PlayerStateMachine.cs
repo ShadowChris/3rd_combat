@@ -29,6 +29,9 @@ public class PlayerStateMachine : StateMachine
     // 旋转丝滑程度：值越大，人物动作旋转越丝滑
     [field: SerializeField] public float RotationDamping { get; private set; }
 
+    // 攻击动画数组：使用字符串储存攻击动画名称
+    [field: SerializeField] public Attack[] Attacks { get; private set; }
+
 
     // 主相机位置：为了控制器跟随相机视角改变（按住W，同时移动视角也可以左右移动）
     public Transform MainCameraTransform { get; private set; }

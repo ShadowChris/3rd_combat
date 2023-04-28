@@ -24,7 +24,7 @@ public class PlayerTargetingState : PlayerBaseState
         // 首先检查是否按下攻击键
         if (stateMachine.InputReader.IsAttacking)
         {
-            stateMachine.SwitchState(new PlayerAttackingState(stateMachine));
+            stateMachine.SwitchState(new PlayerAttackingState(stateMachine, 0));
             return;
         }
 
