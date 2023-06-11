@@ -20,7 +20,12 @@ public abstract class PlayerBaseState : State
     {
         stateMachine.Controller.Move((motion + stateMachine.ForceReceiver.Movement) * deltaTime);
     }
-    
+    protected void Move(float deltaTime)
+    {
+        // 只施加重力，无运动的向量。用在非移动状态中（如攻击等）
+        Move(Vector3.zero, deltaTime);
+    }
+
     // 面部朝向目标
     protected void FaceTarget()
     {
