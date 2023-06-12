@@ -13,6 +13,16 @@ public class ForceReceiver : MonoBehaviour
      * 需要处理角色控制器
      */
     [SerializeField] private CharacterController controller;
+    /**
+    * 力的过渡时间
+    */
+    [SerializeField] private float drag = 0.3f;
+    
+    /**
+     * 受力的衰减速度
+     */
+    private Vector3 dampingVelocity;
+    private Vector3 impact;
 
     /**
      * y轴的速度，代表重力。注意：重力是负数
@@ -22,7 +32,7 @@ public class ForceReceiver : MonoBehaviour
     /**
      * =>：相当于get()方法。返回角色的一个整体的全局受力情况
      */
-    public Vector3 Movement => Vector3.up * verticalVelocity;
+    public Vector3 Movement => impact + Vector3.up * verticalVelocity;
 
     private void Update()
     {
@@ -39,5 +49,17 @@ public class ForceReceiver : MonoBehaviour
             // 触发falling
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
         }
+
+        // 施加受力（连招带动身体的力；受击的力）
+        // 原理：每帧都会调用Update()方法，不断改变impact的值，然后在下面的代码中，不断衰减impact的值
+        impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, drag);
+        Debug.Log("impact: " + impact);
+    }
+
+    /**
+     * 施加力
+     */
+    public void AddForce(Vector3 force) {
+        impact += force;
     }
 }

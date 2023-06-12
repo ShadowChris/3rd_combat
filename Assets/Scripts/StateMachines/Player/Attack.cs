@@ -4,20 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
- * ´¢´æ¹¥»÷¶¯×÷µÄ¶¯»­Ãû³Æ£¬ĞèÒª×¢½â¿ÉĞòÁĞ»¯
+ * å‚¨å­˜æ”»å‡»åŠ¨ä½œçš„åŠ¨ç”»åç§°ï¼Œéœ€è¦æ³¨è§£å¯åºåˆ—åŒ–
  */
 [Serializable]
 public class Attack
 {
-    // µ±Ç°¹¥»÷¶¯×÷µÄ¶¯»­Ãû
+    // å½“å‰æ”»å‡»åŠ¨ä½œçš„åŠ¨ç”»å
     [field: SerializeField] public string AnimationName { get; private set; }
 
-    // 2¸ö¶¯»­Ö®¼äµÄ¹ı¶ÉÊ±¼ä
+    // 2ä¸ªåŠ¨ç”»ä¹‹é—´çš„è¿‡æ¸¡æ—¶é—´
     [field: SerializeField] public float TransitionDuration { get; private set; }
 
-    // Á¬»÷×´Ì¬index£ºÄ¬ÈÏ-1£¬·Ç¹¥»÷×´Ì¬
+    // è¿å‡»çŠ¶æ€indexï¼šé»˜è®¤-1ï¼Œéæ”»å‡»çŠ¶æ€
     [field: SerializeField] public int ComboStateIndex { get; private set; } = -1;
 
-    // Á¬ÕĞµÄ¹¥»÷³ÖĞøÊ±¼ä
+    // è¿æ‹›çš„æ”»å‡»æŒç»­æ—¶é—´
     [field: SerializeField] public float ComboAttackTime { get; private set; }
+    
+    // --------------ä»¥ä¸‹ä¸ºæ”»å‡»æƒ¯æ€§å±æ€§---------------
+    /**
+    * æ–½åŠ åŠ›çš„æ—¶é—´
+    */
+    [field: SerializeField] public float ForceTime { get; private set; }
+    /**
+    * æƒ¯æ€§åŠ›çš„å¤§å°
+    */
+    [field: SerializeField] public float Force { get; private set; }
 }

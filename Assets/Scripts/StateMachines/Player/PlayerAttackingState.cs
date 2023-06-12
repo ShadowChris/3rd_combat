@@ -5,11 +5,12 @@ using UnityEngine;
 public class PlayerAttackingState : PlayerBaseState
 {
 
-    private float previousFrameTime;
     /**
-     * µ±Ç°¹¥»÷¶¯×÷
+     * å½“å‰æ”»å‡»åŠ¨ä½œ
      */
     private Attack attack;
+
+    private bool alreadyAppliedForce;
 
     public PlayerAttackingState(PlayerStateMachine stateMachine, int attackIndex) : base(stateMachine)
     {
@@ -18,35 +19,41 @@ public class PlayerAttackingState : PlayerBaseState
 
     public override void Enter()
     {
-        // CrossFadeInFixedTime()£ºÈÃ¶¯»­¹ı¶ÉµÃ¸ü¼ÓË³³©¡£fixedTransionDuration: Á½¸ö¶¯»­µÄ¹ı¶ÉÊ±¼ä
+        // CrossFadeInFixedTime()ï¼šè®©åŠ¨ç”»è¿‡æ¸¡å¾—æ›´åŠ é¡ºç•…ã€‚fixedTransionDuration: ä¸¤ä¸ªåŠ¨ç”»çš„è¿‡æ¸¡æ—¶é—´
         stateMachine.Animator.CrossFadeInFixedTime(attack.AnimationName, attack.TransitionDuration);
     }
     public override void Tick(float deltaTime)
     {
-        // 1. ´¦Àí¹¥»÷Ê±ÒÆ¶¯Âß¼­£ºµ±¹¥»÷µÄÊ±ºòÈç¹û½ÇÉ«Àë¿ªµØÃæ£¬ĞèÒª¸ø½ÇÉ«Ê©¼ÓÒ»¸öÁ¦£¬¶ø²»ÊÇĞü¸¡ÔÚ¿ÕÖĞ
+        // 1. å¤„ç†æ”»å‡»æ—¶ç§»åŠ¨é€»è¾‘ï¼šå½“æ”»å‡»çš„æ—¶å€™å¦‚æœè§’è‰²ç¦»å¼€åœ°é¢ï¼Œéœ€è¦ç»™è§’è‰²æ–½åŠ ä¸€ä¸ªåŠ›ï¼Œè€Œä¸æ˜¯æ‚¬æµ®åœ¨ç©ºä¸­
         Move(deltaTime);
 
         //Debug.Log(stateMachine.InputReader.IsAttacking);
         //-----------------------------------------
-        // 2. ´¦ÀíÁ¬»÷Âß¼­
+        // 2. å¤„ç†è¿å‡»é€»è¾‘ï¼šå½“æ”»å‡»çš„æ—¶å€™ï¼Œå¦‚æœç©å®¶æŒ‰ä¸‹äº†æ”»å‡»é”®ï¼Œå°±ä¼šè§¦å‘è¿å‡»ï¼›
+        // å½“åœ¨æ”»å‡»åŠ¨ç”»æ’­æ”¾å®Œæ¯•åä»ç„¶æ²¡è§¦å‘è¿å‡»ï¼Œå°±ä¼šå›åˆ°IdleçŠ¶æ€
         float normalizedTime = GetNormalizedTime();
-        
-        // TO DO: ´¦Àí¹ı¶É±ß½ç
-        if (normalizedTime > previousFrameTime && normalizedTime < 1f)
+        if (normalizedTime < 1f)
         {
-            // ´¦Àí¹¥»÷×´Ì¬
+            // 2.1 å¤„ç†æ”»å‡»æƒ¯æ€§
+            if (normalizedTime >= attack.ForceTime) {
+                TryApplyForce();
+            }
+            // 2.2 å¤„ç†è¿æ‹›
             if (stateMachine.InputReader.IsAttacking)
             {
-                Debug.Log("@@@TryComboAttack@@@");
+                // Debug.Log("@@@TryComboAttack@@@");
                 TryComboAttack(normalizedTime);
             }
         }
         else
         {
             // go back to locomotion
-            //stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
+            if (stateMachine.Targeter.CurrentTarget != null) {
+                stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
+            } else {
+                stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
+            }
         }
-        previousFrameTime = normalizedTime;
     }
 
     public override void Exit()
@@ -54,49 +61,57 @@ public class PlayerAttackingState : PlayerBaseState
 
     }
 
-    // ³¢ÊÔÁ¬»÷
+    // å°è¯•è¿å‡»
     private void TryComboAttack(float normalizedTime)
     {
         //Debug.Log(stateMachine.InputReader.IsAttacking);
         if (attack.ComboStateIndex == -1) { return; }
 
         Debug.Log(string.Format("Name:{0}, NormalizedTime: {1}, ComboAttackTime: {2}", attack.AnimationName, normalizedTime, attack.ComboAttackTime));
-        // ¹¥»÷ĞèÒª³ÖĞøµ½Ò»¶¨Ê±¼ä²ÅÄÜ´¥·¢ÏÂÒ»´Î¹¥»÷
+        // æ”»å‡»éœ€è¦æŒç»­åˆ°ä¸€å®šæ—¶é—´æ‰èƒ½è§¦å‘ä¸‹ä¸€æ¬¡æ”»å‡»
         if (normalizedTime < attack.ComboAttackTime) { return; }
 
         stateMachine.SwitchState(new PlayerAttackingState(stateMachine, attack.ComboStateIndex));
         
     }
 
-    
+    // å°è¯•ä¸ºæ”»å‡»æ·»åŠ ä¸€ä¸ªå‘å‰çš„åŠ›ï¼ˆæ”»å‡»æƒ¯æ€§ï¼‰
+    private void TryApplyForce() {
+        if (alreadyAppliedForce) { return; }
+        
+        stateMachine.ForceReceiver.AddForce(stateMachine.transform.forward * attack.Force);
+        alreadyAppliedForce = true;
+    }
 
     private float GetNormalizedTime()
     {
-        // µ±Ç°¹¥»÷×´Ì¬ĞÅÏ¢
+        // å½“å‰æ”»å‡»çŠ¶æ€ä¿¡æ¯
         AnimatorStateInfo currentInfo = stateMachine.Animator.GetCurrentAnimatorStateInfo(0);
-        // ÏÂÒ»¸ö¹¥»÷×´Ì¬ĞÅÏ¢
+        // ä¸‹ä¸€ä¸ªæ”»å‡»çŠ¶æ€ä¿¡æ¯
         AnimatorStateInfo nextInfo = stateMachine.Animator.GetNextAnimatorStateInfo(0);
 
 
         if (stateMachine.Animator.IsInTransition(0) && nextInfo.IsTag("Attack"))
         {
-            // 1. Èç¹ûÔÚÁ½¸ö¶¯»­µÄ¹ı¶É½×¶Î£¬·µ»ØÏÂÒ»¸ö¶¯»­µÄÊ±¼ä
+            // 1. å¦‚æœåœ¨ä¸¤ä¸ªåŠ¨ç”»çš„è¿‡æ¸¡é˜¶æ®µï¼Œè¿”å›ä¸‹ä¸€ä¸ªåŠ¨ç”»çš„æ—¶é—´
             //Debug.Log("Next time: " + nextInfo.normalizedTime);
             return nextInfo.normalizedTime;
 
         } else if (!stateMachine.Animator.IsInTransition(0) && currentInfo.IsTag("Attack"))
         {
-            //2. Èç¹û²»ÔÚ¹ı¶É½×¶Î£¨´¦ÓÚÄ³¸ö¶¯»­ÖĞ¼ä£©£¬Ôò·µ»Øµ±Ç°µÄ¶¯»­Ê±¼ä
+            //2. å¦‚æœä¸åœ¨è¿‡æ¸¡é˜¶æ®µï¼ˆå¤„äºæŸä¸ªåŠ¨ç”»ä¸­é—´ï¼‰ï¼Œåˆ™è¿”å›å½“å‰çš„åŠ¨ç”»æ—¶é—´
             //Debug.Log("Current time: " + currentInfo.normalizedTime);
             return currentInfo.normalizedTime;
 
         } else
         {
-            // ²»ÊÇ¹¥»÷×´Ì¬¶¯»­
+            // ä¸æ˜¯æ”»å‡»çŠ¶æ€åŠ¨ç”»
             return 0f;
         }
-        // ´æÔÚÎÊÌâ£ºÈç¹ûÊÇÇ°Ò»¸ö¶¯»­µÄ×îºóÒ»Ö¡»ñÈ¡ĞÅÏ¢£¬Ôò»á³öÏÖÎÊÌâ£¨£¿£©
+        // å­˜åœ¨é—®é¢˜ï¼šå¦‚æœæ˜¯å‰ä¸€ä¸ªåŠ¨ç”»çš„æœ€åä¸€å¸§è·å–ä¿¡æ¯ï¼Œåˆ™ä¼šå‡ºç°é—®é¢˜ï¼ˆï¼Ÿï¼‰
     }
+
+
 
 
 }
