@@ -1086,14 +1086,14 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_BindingMode: 4
-  m_SplineCurvature: 0.2
+  m_SplineCurvature: 0
   m_Orbits:
-  - m_Height: 4.5
-    m_Radius: 8
-  - m_Height: 1.8
-    m_Radius: 5
-  - m_Height: -2.75
-    m_Radius: 1
+  - m_Height: 4.38
+    m_Radius: 0.6
+  - m_Height: 1.77
+    m_Radius: 4.44
+  - m_Height: -1.66
+    m_Radius: 1.4
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
   - {fileID: 8581549912107305694}

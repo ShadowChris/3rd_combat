@@ -53,7 +53,7 @@ public class ForceReceiver : MonoBehaviour
         // 施加受力（连招带动身体的力；受击的力）
         // 原理：每帧都会调用Update()方法，不断改变impact的值，然后在下面的代码中，不断衰减impact的值
         impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, drag);
-        Debug.Log("impact: " + impact);
+        // Debug.Log("impact: " + impact);
     }
 
     /**

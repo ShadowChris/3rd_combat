@@ -67,7 +67,7 @@ public class PlayerAttackingState : PlayerBaseState
         //Debug.Log(stateMachine.InputReader.IsAttacking);
         if (attack.ComboStateIndex == -1) { return; }
 
-        Debug.Log(string.Format("Name:{0}, NormalizedTime: {1}, ComboAttackTime: {2}", attack.AnimationName, normalizedTime, attack.ComboAttackTime));
+        // Debug.Log(string.Format("Name:{0}, NormalizedTime: {1}, ComboAttackTime: {2}", attack.AnimationName, normalizedTime, attack.ComboAttackTime));
         // 攻击需要持续到一定时间才能触发下一次攻击
         if (normalizedTime < attack.ComboAttackTime) { return; }
 
