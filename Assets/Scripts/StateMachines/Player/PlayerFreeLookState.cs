@@ -20,6 +20,11 @@ public class PlayerFreeLookState: PlayerBaseState
      */
     private const float AnimatorDampTime = 0.1f;
 
+    /**
+     * 其他动画切换到本闲置动画的过渡时间
+     */
+    private const float CrossFadeDuration = 0.1f;
+
     public PlayerFreeLookState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
@@ -29,7 +34,7 @@ public class PlayerFreeLookState: PlayerBaseState
         // stateMachine.InputReader.JumpEvent += OnJump;
         
         // 切换到闲置动画
-        stateMachine.Animator.Play(FreeLookBlendTreeHash);
+        stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
     }
 
     public override void Tick(float deltaTime)

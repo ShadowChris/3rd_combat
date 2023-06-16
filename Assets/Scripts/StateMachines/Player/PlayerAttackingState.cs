@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerAttackingState : PlayerBaseState
 {
-
     /**
      * 当前攻击动作
      */
@@ -21,6 +20,9 @@ public class PlayerAttackingState : PlayerBaseState
     {
         // CrossFadeInFixedTime()：让动画过渡得更加顺畅。fixedTransionDuration: 两个动画的过渡时间
         stateMachine.Animator.CrossFadeInFixedTime(attack.AnimationName, attack.TransitionDuration);
+        // 设置当前连招的武器伤害
+        stateMachine.Weapon.setAttack(attack.Damage);
+
     }
     public override void Tick(float deltaTime)
     {

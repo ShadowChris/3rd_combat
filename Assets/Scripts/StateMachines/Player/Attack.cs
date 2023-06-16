@@ -30,4 +30,9 @@ public class Attack
     * 惯性力的大小
     */
     [field: SerializeField] public float Force { get; private set; }
+
+    /**
+     * 攻击的伤害
+     */
+    [field: SerializeField] public int Damage { get; private set; }
 }

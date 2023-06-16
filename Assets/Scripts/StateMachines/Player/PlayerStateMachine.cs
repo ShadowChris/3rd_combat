@@ -11,12 +11,6 @@ public class PlayerStateMachine : StateMachine
     // 角色控制器：控制角色的移动等属性，涉及角色的碰撞参数（内嵌类，详情见Inspector）
     [field: SerializeField] public CharacterController Controller { get; private set; }
     
-    // 正常移动速度。不同状态可能移动速度不一样，后续可能有TargetMovementSpeed或者其他的
-    [field:SerializeField] public float FreeLookMovementSpeed { get; private set; }
-    
-    // 锁定目标时移动速度
-    [field:SerializeField] public float TargetingMovementSpeed { get; private set; }
-    
     // 动画器：控制角色的动画效果
     [field: SerializeField] public Animator Animator { get; private set; }
 
@@ -26,12 +20,22 @@ public class PlayerStateMachine : StateMachine
     // 受力器：实现角色的各种受力状况，如：重力、反击
     [field: SerializeField] public ForceReceiver ForceReceiver { get; private set; }
 
+    // 武器伤害：储存武器伤害的逻辑，例如碰撞，扣血等
+    [field: SerializeField] public WeaponDamage Weapon { get; private set; }
+
+
+    // 正常移动速度。不同状态可能移动速度不一样，后续可能有TargetMovementSpeed或者其他的
+    [field:SerializeField] public float FreeLookMovementSpeed { get; private set; }
+    
+    // 锁定目标时移动速度
+    [field:SerializeField] public float TargetingMovementSpeed { get; private set; }
+
     // 旋转丝滑程度：值越大，人物动作旋转越丝滑
     [field: SerializeField] public float RotationDamping { get; private set; }
 
+
     // 攻击动画数组：使用字符串储存攻击动画名称
     [field: SerializeField] public Attack[] Attacks { get; private set; }
-
 
     // 主相机位置：为了控制器跟随相机视角改变（按住W，同时移动视角也可以左右移动）
     public Transform MainCameraTransform { get; private set; }

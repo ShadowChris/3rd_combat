@@ -8,6 +8,8 @@ public class WeaponDamage : MonoBehaviour
      * 持有当前武器的角色的碰撞体，防止自己的武器碰撞到角色自己
      */
     [SerializeField] private Collider myCollider;
+    
+    private int damage = -10;
 
     /**
      * 保存已经碰撞过的碰撞体，避免同一帧触发多次碰撞
@@ -34,8 +36,15 @@ public class WeaponDamage : MonoBehaviour
         Health health = other.GetComponent<Health>();
         if (health != null)
         {
-            health.DealDamage(10);
+            health.DealDamage(damage);
         }
 
+    }
+
+    /**
+     * 设置招式的攻击力
+     */
+    public void setAttack(int damage) {
+        this.damage = damage;
     }
 }

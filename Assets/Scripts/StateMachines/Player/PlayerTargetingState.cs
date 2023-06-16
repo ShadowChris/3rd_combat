@@ -8,7 +8,13 @@ public class PlayerTargetingState : PlayerBaseState
     private readonly int TargetingBlendTreeHash = Animator.StringToHash("TargetingBlendTree");
     private readonly int TargetingForwardHash = Animator.StringToHash("TargetingForward");
     private readonly int TargetingRightHash = Animator.StringToHash("TargetingRight");
+
     private const float TargetingAnimatorDampTime = 0.1f;
+    /**
+     * 其他动画切换到本锁定动画的过渡时间
+     */
+    private const float CrossFadeDuration = 0.1f;
+
     public PlayerTargetingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
@@ -16,7 +22,7 @@ public class PlayerTargetingState : PlayerBaseState
         // 将本类下方的onCancel()注册到Event中。Event被触发，则触发响应函数
         stateMachine.InputReader.CancelEvent += OnCancel;
         // 过渡到当前状态动画
-        stateMachine.Animator.Play(TargetingBlendTreeHash);
+        stateMachine.Animator.CrossFadeInFixedTime(TargetingBlendTreeHash, CrossFadeDuration);
     }
 
     public override void Tick(float deltaTime)
