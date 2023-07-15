@@ -2932,10 +2932,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8001001132452122905}
   - component: {fileID: 7949982897269142885}
+  - component: {fileID: 6498279729676899663}
   - component: {fileID: 7463856215176933771}
   - component: {fileID: 4029836508091184914}
   - component: {fileID: 3078126306671195362}
   - component: {fileID: 3637123826806951146}
+  - component: {fileID: 8011485290755459813}
   m_Layer: 0
   m_Name: Enemy_Kazuko
   m_TagString: Untagged
@@ -2982,6 +2984,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!195 &6498279729676899663
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999062578392470507}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.66
+  m_Speed: 1
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.57
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!143 &7463856215176933771
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3013,6 +3037,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Animator>k__BackingField: {fileID: 7949982897269142885}
+  <Controller>k__BackingField: {fileID: 7463856215176933771}
+  <ForceReceiver>k__BackingField: {fileID: 8011485290755459813}
+  <Agent>k__BackingField: {fileID: 6498279729676899663}
+  <PlayerChasingRange>k__BackingField: 10
+  <ChasingMovementSpeed>k__BackingField: 0.8
+  <RotationDamping>k__BackingField: 10
 --- !u!114 &3078126306671195362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3038,6 +3068,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &8011485290755459813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999062578392470507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e22cfaf7662e24b8daf6587c5f492dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 7463856215176933771}
+  drag: 0.3
 --- !u!1 &7999066385318340023
 GameObject:
   m_ObjectHideFlags: 0
