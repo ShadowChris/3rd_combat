@@ -34,6 +34,7 @@ public class EnemyChasingState : EnemyBaseState
         }
 
         MoveToPlayer(deltaTime);
+        FacePlayer();
     }
     public override void Exit()
     {
@@ -49,15 +50,15 @@ public class EnemyChasingState : EnemyBaseState
 
         //寻路跟踪玩家（会避障）
         stateMachine.Agent.SetDestination(stateMachine.Player.transform.position);
-        stateMachine.Controller.Move(stateMachine.Agent.desiredVelocity.normalized * stateMachine.ChasingMovementSpeed * deltaTime);
+        Move(stateMachine.Agent.desiredVelocity.normalized * stateMachine.ChasingMovementSpeed, deltaTime);
         // stateMachine.Agent.velocity = stateMachine.Controller.velocity;
 
-        //目标旋转，总是朝着玩家
-        stateMachine.transform.rotation = Quaternion.Lerp(
-            stateMachine.transform.rotation,
-            Quaternion.LookRotation(movement),
-            deltaTime * stateMachine.RotationDamping
-        );
+        // //目标旋转，总是朝着玩家 （在EnemyBaseState的FacePlayer()代替）
+        // stateMachine.transform.rotation = Quaternion.Lerp(
+        //     stateMachine.transform.rotation,
+        //     Quaternion.LookRotation(movement),
+        //     deltaTime * stateMachine.RotationDamping
+        // );
         
         stateMachine.Animator.SetFloat(SpeedHash, 1, AnimatorDampTime, deltaTime);
     }
